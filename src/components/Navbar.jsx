@@ -93,7 +93,7 @@ const Navbar = () => {
         
         {cart &&
        <div className="">
-         <div className="flex items-center absolute top-40 left-[40px] w-[280px] bg-[#F5F5F3] z-40">
+         <div className="flex items-center absolute top-20 left-[40px] w-[280px] bg-[#F5F5F3] z-40">
           <div className="">
            <img src={img} alt="" />
           </div>
@@ -106,7 +106,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="absolute top-60 left-[40px] w-[280px] bg-white z-50">
+        <div className="absolute top-40 left-[40px] w-[280px] bg-white z-50">
           <div className="py-3">
             <h2>Subtotal: <span className='font-dm text-[18px] font-semibold'>$44.00</span></h2>
           </div>

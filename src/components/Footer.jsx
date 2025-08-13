@@ -50,7 +50,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex pt-[50px]">
+        <div className="flex pt-[50px] pb-6">
             <div className="w-3/5 flex gap-x-5 items-center">
             <FaFacebookF />
             <FaLinkedinIn />
