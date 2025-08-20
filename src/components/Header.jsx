@@ -12,7 +12,7 @@ const Header = () => {
         <div className="mx-auto">
             <ul className='flex gap-x-8'>
                 <li className='text-[#767676] font-dm hover:text-black hover:font-semibold duration-400 ease-in-out'><a href="#">Home</a></li>
-                <li className='text-[#767676] font-dm hover:text-black hover:font-semibold duration-400 ease-in-out'><a href="#">Shop</a></li>
+                <li className='text-[#767676] font-dm hover:text-black hover:font-semibold duration-400 ease-in-out'><a href="/products">Shop</a></li>
                 <li className='text-[#767676] font-dm hover:text-black hover:font-semibold duration-400 ease-in-out'><a href="#">About</a></li>
                 <li className='text-[#767676] font-dm hover:text-black hover:font-semibold duration-400 ease-in-out'><a href="#">Contacts</a></li>
                 <li className='text-[#767676] font-dm hover:text-black hover:font-semibold duration-400 ease-in-out'><a href="#">Journal</a></li>

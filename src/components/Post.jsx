@@ -14,7 +14,7 @@ const Post = ({allPage}) => {
                     {allPage.map((item)=>(
                     <div className="w-[32%] py-[60px]">
                         <div className="relative group">
-                            <Link>
+                            <Link to={`/product/${item.id}`}>
                                 <img src={item.thumbnail} alt="" />
                             </Link>
                             <div className="bg-[white] absolute left-0 bottom-0 w-full opacity-0 group-hover:opacity-100 duration-300">
