@@ -15,6 +15,8 @@ const Products = () => {
   let [currentPage,setCurrentPage] = useState(1)
   let [categories,setCategories] = useState([])
   let [brand,setBrand] = useState([])
+  let [filterShow, setFilterShow] = useState([])
+  let [listItem, setListItem] = useState("")
 
   let lastPage = perPage * currentPage
   let firstPage = lastPage - perPage
@@ -50,6 +52,21 @@ const Products = () => {
    setCategories([...new Set(info.map((item)=>item.category))])
    setBrand([...new Set(info.map((item)=>item.brand))])
   },[info])
+
+
+  let handleCategory = (citem)=>{
+   let cateFilter = info.filter((item)=>item.category == citem)
+    setFilterShow(cateFilter);
+  }
+  let handleAll = ()=>{
+    setFilterShow("")
+  }
+  
+  let handleListItem = ()=>{
+    setListItem("active");
+    
+  }
+  
   
 
   return (
@@ -66,8 +83,9 @@ const Products = () => {
            <div className="pt-6">
            <div className="">
             <ul>
+              <li onClick={()=>handleAll()} className='font-dm text-[#767676] capitalize py-4 cursor-pointer'>Show All</li>
             {categories.map((item)=>(
-            <li className='font-dm text-[#767676] capitalize py-4 '>{item} ({item.length})</li>
+            <li onClick={()=>handleCategory(item)} className='font-dm text-[#767676] capitalize py-4 cursor-pointer'>{item}</li>
             ))}
            </ul>
            </div>
@@ -86,8 +104,16 @@ const Products = () => {
            <div className="flex justify-between items-center">
             <div className="">
              <div className="flex gap-2">
-              <IoGrid/>
-              <FaListUl/>
+              <div className={`${listItem == "active" ?'' :'bg-[#262626] text-white' }`} onClick={()=>setListItem("")}>
+                <div className="p-2">
+                  <IoGrid/>
+                </div>
+              </div>
+              <div onClick={handleListItem} className={`${listItem == "active" ?'bg-[#262626] text-white' :'' }`}>
+                <div className="p-2">
+                  <FaListUl/>
+                </div>
+              </div>
              </div>
             </div>
              <div className="text-end">
@@ -107,7 +133,7 @@ const Products = () => {
             </select>
            </div>
            </div>
-           <Post allPage={allPage}/>
+           <Post allPage={allPage} filterShow={filterShow} listItem={listItem}/>
            <Pagination pageNumber={pageNumber} paginate={paginate} next={next} previous={previous} currentPage={currentPage}/>
           </div>
         </div>
