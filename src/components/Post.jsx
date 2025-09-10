@@ -1,65 +1,97 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from './Container'
-import one from "../assets/one.png"
 import { Link } from 'react-router-dom'
 import { FaHeart, FaShoppingCart } from 'react-icons/fa'
 import { IoMdGitCompare } from 'react-icons/io'
 
-const Post = ({allPage,filterShow,listItem}) => {
-        
+const Post = ({ allPage, filterShow, listItem }) => {
+
+    let[cateFilterShow,setCateFilterShow] = useState([])
+    let [show,setShow] = useState(true)
+
+    useEffect(()=>{
+        let cateAll = filterShow.slice(0,5)
+        setCateFilterShow(cateAll)
+    },[filterShow])
+
+    let handleShow = ()=>{
+    setCateFilterShow(filterShow)
+    setShow(false)
+    }
+
+    let handleLess = ()=>{
+         let cateAll = filterShow.slice(0,5)
+        setCateFilterShow(cateAll)
+         setShow(true)
+    }
+
     return (
         <div>
             <Container>
-            <div className="flex flex-wrap justify-between">
-                {filterShow.length > 0 ? filterShow.map((item)=>(
-                    <div className="w-[32%] py-[60px]">
-                        <div className="relative group">
-                            <Link to={`/product/${item.id}`}>
-                                <img src={item.thumbnail} alt="" />
-                            </Link>
-                            <div className="bg-[white] absolute left-0 bottom-0 w-full opacity-0 group-hover:opacity-100 duration-300">
-                                <ul className='pr-2 pt-4 pb-4'>
-                                    <li className='flex items-center justify-end gap-3'> <span>Add to wish List </span><FaHeart /></li>
-                                    <li className='flex items-center justify-end gap-3 py-2'> <span>Compare </span><IoMdGitCompare /></li>
-                                    <li className='flex items-center justify-end gap-3'> <span>Add to Cart </span><FaShoppingCart /></li>
-                                </ul>
+                <div className="">
+                    {cateFilterShow.length > 0 ?
+
+                        <div className="">
+                            <div className="flex flex-wrap justify-between">
+                                {cateFilterShow.map((item) => (
+                                    <div className="w-[32%] py-[60px]">
+                                        <div className="relative group">
+                                            <Link to={`/product/${item.id}`}>
+                                                <img src={item.thumbnail} alt="" />
+                                            </Link>
+                                            <div className="bg-[white] absolute left-0 bottom-0 w-full opacity-0 group-hover:opacity-100 duration-300">
+                                                <ul className='pr-2 pt-4 pb-4'>
+                                                    <li className='flex items-center justify-end gap-3'> <span>Add to wish List </span><FaHeart /></li>
+                                                    <li className='flex items-center justify-end gap-3 py-2'> <span>Compare </span><IoMdGitCompare /></li>
+                                                    <li className='flex items-center justify-end gap-3'> <span>Add to Cart </span><FaShoppingCart /></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <div className="">
+                                                <h3 className='text-[#1e8f80] font-dm text-[16px] font-bold mt-[10px] w-[200px]'>{item.title}</h3>
+                                                <p className='mt-[10px]'>Black</p>
+                                            </div>
+                                            <p className='mt-[10px] pr-5 text-green-600'>${item.price}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
+
+                            {filterShow.length > 5 &&
+                            show ?
+                            <h2 onClick={handleShow} className='cursor-pointer font-dm font-bold text-[16px]'>Show All </h2>                            
+                            : filterShow.length > 5 &&
+                            <h2 onClick={handleLess} className='cursor-pointer font-dm font-bold text-[16px]'>Show Less</h2>}
+
                         </div>
-                        <div className="flex justify-between">
-                            <div className="">
-                                <h3 className='text-[#1e8f80] font-dm text-[16px] font-bold mt-[10px] w-[200px]'>{item.title}</h3>
-                                <p className='mt-[10px]'>Black</p>
-                            </div>
-                            <p className='mt-[10px] pr-5 text-green-600'>${item.price}</p>
-                        </div>
-                    </div>
-                )) :<div className={`${listItem == "active" ?'w-full' :'w-full flex flex-wrap justify-between' }`}>
-                {allPage.map((item)=>(
-                    <div className="w-[32%] py-[60px]">
-                        <div className="relative group">
-                            <Link to={`/product/${item.id}`}>
-                                <img src={item.thumbnail} alt="" />
-                            </Link>
-                            <div className="bg-[white] absolute left-0 bottom-0 w-full opacity-0 group-hover:opacity-100 duration-300">
-                                <ul className='pr-2 pt-4 pb-4'>
-                                    <li className='flex items-center justify-end gap-3'> <span>Add to wish List </span><FaHeart /></li>
-                                    <li className='flex items-center justify-end gap-3 py-2'> <span>Compare </span><IoMdGitCompare /></li>
-                                    <li className='flex items-center justify-end gap-3'> <span>Add to Cart </span><FaShoppingCart /></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="flex justify-between">
-                            <div className="">
-                                <h3 className='text-[#1e8f80] font-dm text-[16px] font-bold mt-[10px] w-[200px]'>{item.title}</h3>
-                                <p className='mt-[10px]'>Black</p>
-                            </div>
-                            <p className='mt-[10px] pr-5 text-green-600'>${item.price}</p>
-                        </div>
-                    </div>
-                ))}
-                </div>}
-                   
-            </div>
+
+                        : <div className={`${listItem == "active" ? 'w-full' : 'w-full flex flex-wrap justify-between'}`}>
+                            {allPage.map((item) => (
+                                <div className="w-[32%] py-[60px]">
+                                    <div className="relative group">
+                                        <Link to={`/product/${item.id}`}>
+                                            <img src={item.thumbnail} alt="" />
+                                        </Link>
+                                        <div className="bg-[white] absolute left-0 bottom-0 w-full opacity-0 group-hover:opacity-100 duration-300">
+                                            <ul className='pr-2 pt-4 pb-4'>
+                                                <li className='flex items-center justify-end gap-3'> <span>Add to wish List </span><FaHeart /></li>
+                                                <li className='flex items-center justify-end gap-3 py-2'> <span>Compare </span><IoMdGitCompare /></li>
+                                                <li className='flex items-center justify-end gap-3'> <span>Add to Cart </span><FaShoppingCart /></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <div className="">
+                                            <h3 className='text-[#1e8f80] font-dm text-[16px] font-bold mt-[10px] w-[200px]'>{item.title}</h3>
+                                            <p className='mt-[10px]'>Black</p>
+                                        </div>
+                                        <p className='mt-[10px] pr-5 text-green-600'>${item.price}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>}
+                </div>
             </Container>
         </div>
     )

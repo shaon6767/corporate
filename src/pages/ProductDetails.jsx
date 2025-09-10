@@ -1,10 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Container from '../components/Container'
 import { IoMdGitCompare } from 'react-icons/io'
-import { FaCircle, FaHeart, FaRegStar, FaShoppingCart, FaStar, FaStarHalfAlt } from 'react-icons/fa'
+import { FaCircle, FaHeart, FaPlus, FaRegStar, FaShoppingCart, FaStar, FaStarHalfAlt } from 'react-icons/fa'
 import { ApiData } from '../components/ContextApi'
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
+import { GoPlus } from 'react-icons/go'
+import { HiOutlineMinusSmall } from 'react-icons/hi2'
 
 const ProductDetails = () => {
   let productId = useParams()
@@ -30,7 +32,35 @@ const ProductDetails = () => {
     )
   })
 
+   let [dropdown, setDropdown] = useState(false)
+   let [dropdowntwo, setDropdownTwo] = useState(false)
+   let dropRef = useRef()
+   let droptwoRef = useRef()
 
+      useEffect(()=>{
+               document.addEventListener("click", (e)=>{
+             if(dropRef.current.contains(e.target)){
+              setDropdown(!dropdown)
+              
+             }else{
+               setDropdown(false)       
+             } 
+             
+               if(droptwoRef.current.contains(e.target)){
+              setDropdownTwo(!dropdowntwo)
+              
+             }else{
+               setDropdownTwo(false)       
+             } 
+
+              })
+
+
+    },[dropdown,dropdowntwo])
+
+ 
+    let [count, setCount] = useState(1)
+    
   return (
     <Container>
       <div className="py-5">
@@ -92,13 +122,44 @@ const ProductDetails = () => {
         </select>
        </div>
 
-      <div className="flex gap-5 mt-[30px]">
+       <div className="mt-[20px] flex items-center">
+        <label className='text-[18px] font-dm font-semibold pr-[30px]' htmlFor="">QUANTITY:</label>
+        <div className="px-5 py-2 border-1">
+        <p className='flex items-center'><GoPlus onClick={() => setCount(count + 1)}/> <span className='px-5'>{count}</span> <HiOutlineMinusSmall onClick={() => setCount(count - 1)}/></p>
+        </div>
+       </div>
+
+      <div className="flex gap-5 mt-[30px] pb-10">
         <button className='px-10 py-3 border-1 border-[#2626264d] text-[16px] text-[#262626] font-dm font-semibold hover:bg-[#262626] hover:text-[white] duration-200 ease-in-out'>Add to Wish List</button>
         <button className='px-15 py-3 border-1 border-[#2626264d] text-[16px] text-[#262626] font-dm font-semibold hover:bg-[#262626] hover:text-[white] duration-200 ease-in-out'>Add to Cart</button>
       </div>
 
-      <div className="">
-        
+      <div className="py-5 border-t-1 border-[#26262622]">
+        <div className="border-b-1 border-[#26262622]">
+          <div className="flex justify-between pb-5">
+            <h2 className='text-[16px] font-dm font-semibold'>FEATURES  & DETAILS</h2>
+            <FaPlus ref={dropRef}/>
+          </div>
+          {dropdown &&
+          <div className="">
+            <p className="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          }
+        </div>
+      </div>
+
+      <div className="py-5 border-t-1 border-[#26262622]">
+        <div className="border-b-1 border-[#26262622]">
+          <div className="flex justify-between pb-5">
+            <h2 className='text-[16px] font-dm font-semibold'>SHIPPING & RETURNS</h2>
+            <FaPlus ref={droptwoRef}/>
+          </div>
+          {dropdowntwo &&
+          <div className="">
+            <p className="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          }
+        </div>
       </div>
 
       </div>

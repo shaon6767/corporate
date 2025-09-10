@@ -67,7 +67,10 @@ const Products = () => {
     
   }
   
-  
+  let handleBrand = (bitem)=>{
+   let brandFilter = info.filter((item)=>item.brand == bitem)
+   setFilterShow(brandFilter)
+  }
 
   return (
     <div>
@@ -93,7 +96,7 @@ const Products = () => {
             <h2 className='text-[#262626] font-dm text-[16px] font-bold pt-[50px] pb-[20px]'>Shop by Brand</h2>
             <ul>
               {brand.map((item)=>(
-              <li className='font-dm text-[#767676] capitalize py-4 '>{item}</li>
+              <li className='font-dm text-[#767676] capitalize py-4 cursor-pointer' onClick={()=>handleBrand(item)}>{item}</li>
               ))}
             </ul>
            </div>
@@ -134,7 +137,7 @@ const Products = () => {
            </div>
            </div>
            <Post allPage={allPage} filterShow={filterShow} listItem={listItem}/>
-           <Pagination pageNumber={pageNumber} paginate={paginate} next={next} previous={previous} currentPage={currentPage}/>
+           <Pagination pageNumber={pageNumber} paginate={paginate} next={next} previous={previous} currentPage={currentPage} filterShow={filterShow}/>
           </div>
         </div>
       </Container>
