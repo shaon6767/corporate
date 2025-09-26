@@ -17,6 +17,8 @@ const Products = () => {
   let [brand,setBrand] = useState([])
   let [filterShow, setFilterShow] = useState([])
   let [listItem, setListItem] = useState("")
+  let [low, setLow] = useState({})
+  let [high, setHigh] = useState({})
 
   let lastPage = perPage * currentPage
   let firstPage = lastPage - perPage
@@ -72,6 +74,14 @@ const Products = () => {
    setFilterShow(brandFilter)
   }
 
+  let handlePrice =(value)=>{
+    setLow(value.low);
+    setHigh(value.high); 
+    let priceShow = info.filter((item)=>item.price > value.low && item.price < value.high)
+    setFilterShow(priceShow);
+  }
+  
+  
   return (
     <div>
       <Container>
@@ -100,6 +110,17 @@ const Products = () => {
               ))}
             </ul>
            </div>
+
+           <div className="">
+            <h2 className='text-[#262626] font-dm text-[16px] font-bold pt-[40px] pb-[20px]'>Shop by Price</h2>
+            <ul>
+              <li  className='font-dm text-[#767676] py-4 cursor-pointer' onClick={()=>handlePrice({low:0,high:10})}>$0 - $9.99</li>
+              <li  className='font-dm text-[#767676] py-4 cursor-pointer' onClick={()=>handlePrice({low:10,high:20})}>$10 - $19.99</li>
+              <li  className='font-dm text-[#767676] py-4 cursor-pointer' onClick={()=>handlePrice({low:20,high:30})}>$20 - $29.99</li>
+              <li  className='font-dm text-[#767676] py-4 cursor-pointer' onClick={()=>handlePrice({low:30,high:40})}>$30 - $39.99</li>
+            </ul>
+           </div>
+
            </div>
 
           </div>
