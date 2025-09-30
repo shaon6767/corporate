@@ -8,9 +8,13 @@ import axios from 'axios'
 import { GoPlus } from 'react-icons/go'
 import { HiOutlineMinusSmall } from 'react-icons/hi2'
 import { ToastContainer, toast } from 'react-toastify';
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../components/slice/productSlice'
 
 const ProductDetails = () => {
   let navigate = useNavigate()
+
+  let dispatch = useDispatch()
 
   let productId = useParams()
 
@@ -34,6 +38,20 @@ const ProductDetails = () => {
       singleProduct.rating > index + 1 ? <FaStar className='text-[gold]' /> : singleProduct.rating > number ? <FaStarHalfAlt className='text-[#d3bc39]' /> : <FaRegStar />
     )
   })
+
+  const getReviewRating = (rating) => {
+    return Array.from({ length: 5 }, (_, index) => {
+      const number = index + 0.5;
+      return rating > index + 1 ? (
+        <FaStar key={index} className="text-[yellow]" />
+      ) : rating > number ? (
+        <FaStarHalfAlt key={index} className="text-[#7e7e27]" />
+      ) : (
+        <FaRegStar key={index} />
+      );
+    });
+  };
+
 
 
   let [dropdown, setDropdown] = useState(false)
@@ -63,20 +81,17 @@ const ProductDetails = () => {
   }, [dropdown, dropdowntwo])
 
 
-  let [count, setCount] = useState(1)
-
   let discount = (singleProduct.price * singleProduct.discountPercentage) / 100
 
   let mainPrice = singleProduct.price - discount
 
-  let handleCart = () => {
+  let handleCart = (item) => {   
+    dispatch(addToCart({...item , quantity :1}))
     toast("Successfully Added!");
     setTimeout(() => {
       navigate("/cart")
     }, 1500)
   }
-
-  let reviewers = singleProduct?.reviews || [];
 
 
   return (
@@ -139,7 +154,7 @@ const ProductDetails = () => {
             <option className='text-black' value="">XXL</option>
           </select>
         </div>
-{/* 
+        {/* 
         <div className="mt-[20px] flex items-center">
           <label className='text-[18px] font-dm font-semibold pr-[30px]' htmlFor="">QUANTITY:</label>
           <div className="px-5 py-2 border-1">
@@ -149,7 +164,7 @@ const ProductDetails = () => {
 
         <div className="flex gap-5 mt-[30px] pb-10">
           <button className='px-10 py-3 border-1 border-[#2626264d] text-[16px] text-[#262626] font-dm font-semibold hover:bg-[#262626] hover:text-[white] duration-200 ease-in-out'>Add to Wish List</button>
-          <button className='px-15 py-3 border-1 border-[#2626264d] text-[16px] text-[#262626] font-dm font-semibold hover:bg-[#262626] hover:text-[white] duration-200 ease-in-out' onClick={handleCart}>Add to Cart</button>
+          <button className='px-15 py-3 border-1 border-[#2626264d] text-[16px] text-[#262626] font-dm font-semibold hover:bg-[#262626] hover:text-[white] duration-200 ease-in-out' onClick={()=>handleCart(singleProduct)}>Add to Cart</button>
         </div>
         <ToastContainer />
 
@@ -189,19 +204,30 @@ const ProductDetails = () => {
           <div className="mt-[30px] border-t-1 border-b-1 w-full border-[#26262622]">
             <div className="py-5 text-[18px]">
               <div>
-                {reviewers && reviewers.length > 0 ? (
-                  reviewers.map((review) => (
-                    <div key={review.id} className='flex gap-[40px]'>
-                      <p>{review.reviewerName} :</p>
-                      <h2>{review.comment}</h2>
+                {singleProduct?.reviews?.length > 0 ? (
+                  singleProduct.reviews.map((review) => (
+                    <div className='flex gap-4 py-2'>
+                      <div className="">
+                        <p className='font-bold text-[20px]'>{review.reviewerName} :</p>
+                      </div>
+                      <div className="flex items-center">
+                        <h2 className='font-semibold text-center'>{review.comment}</h2>
+                      </div>
+                      <div className="flex items-center justify-end gap-1">
+                        {getReviewRating(review.rating)}
+                      </div>
                     </div>
                   ))
                 ) : (
                   <p>No reviews yet.</p>
                 )}
               </div>
+
+
+
+
             </div>
-            <div className="pb-[30px]">
+            <div className="pb-[30px] text-[18px]">
               <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
             </div>
           </div>
@@ -220,7 +246,7 @@ const ProductDetails = () => {
               <input
                 type="text"
                 placeholder="Your name here"
-                className="px-8 py-4 bg-[rgba(38,38,38,0.06)]" />
+                className="w-[350px] h-[70px] px-4 py-4 bg-[rgba(38,38,38,0.06)]" />
             </div>
           </div>
           <div className="mt-[50px]">
@@ -233,7 +259,7 @@ const ProductDetails = () => {
               <input
                 type="text"
                 placeholder="Your email here"
-                className="px-8 py-4 bg-[rgba(38,38,38,0.06)]" />
+                className="w-[350px] h-[70px] px-4 py-4 bg-[rgba(38,38,38,0.06)]" />
             </div>
           </div>
 
@@ -241,18 +267,16 @@ const ProductDetails = () => {
             <div className="text-[18px] pb-3 font-semibold">
               <label htmlFor="Review">Review</label>
             </div>
-          <div className="">
-            <textarea name="" id="" placeholder='Write your review' className='w-[500px] h-[150px] px-4 py-4 text-[18px] bg-[rgba(38,38,38,0.06)]'></textarea>
-          </div>
+            <div className="">
+              <textarea name="" id="" placeholder='Write your review' className='w-[650px] h-[240px] px-4 py-4 text-[18px] bg-[rgba(38,38,38,0.06)]'></textarea>
+            </div>
           </div>
 
           <div className="mt-[50px]">
-             <button className='px-15 py-3 border-1 text-center border-[#2626264d] text-[16px] font-dm font-semibold bg-[#262626] text-[white] cursor-pointer'>Send</button>
+            <button className='px-15 py-3 border-1 text-center border-[#2626264d] text-[16px] font-dm font-semibold bg-[#262626] text-[white] cursor-pointer'>Send</button>
           </div>
 
         </div>
-
-
 
 
       </div>
