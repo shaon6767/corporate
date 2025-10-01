@@ -5,7 +5,7 @@ import { IoMdArrowDropdown } from 'react-icons/io'
 import { IoSearch } from 'react-icons/io5'
 import img from "../assets/Image.png"
 import { RxCross2 } from 'react-icons/rx'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { cartDelete } from './slice/productSlice'
 
@@ -18,6 +18,7 @@ const Navbar = () => {
   let cateRef = useRef()
   let accRef = useRef()
   let cartRef = useRef()
+  let cartDropdownRef = useRef()
 
   useEffect(() => {
     document.addEventListener("click", (e) => {
@@ -37,9 +38,8 @@ const Navbar = () => {
 
       if (cartRef.current.contains(e.target)) {
         setCart(!cart)
-
-      } else {
-        setCart(true)
+      } else if (cartDropdownRef.current && !cartDropdownRef.current.contains(e.target)) {
+        setCart(false)
       }
 
     })
@@ -49,16 +49,17 @@ const Navbar = () => {
   let handleCart = () => {
     navigate("/cart")
   }
-  
+
   let dispatch = useDispatch()
 
-  let handleDelete = (i)=>{
+  let handleDelete = (i,e) => {
+    e.stopPropagation();
     dispatch(cartDelete(i));
   }
-    let {totalPrice} = data.reduce((acc, item)=>{
+  let { totalPrice } = data.reduce((acc, item) => {
     acc.totalPrice += item.price * item.quantity
     return acc;
-  },{totalPrice:0})
+  }, { totalPrice: 0 })
 
   return (
     <section className='bg-[#F5F5F3]'>
@@ -122,10 +123,11 @@ const Navbar = () => {
             {data.length > 0 &&
               <>
                 {cart &&
+                
                   <div className="">
-                    <div className="items-center absolute top-20 left-[40px] w-[280px] bg-[#F5F5F3] z-40">
-                      {data.map((item,i) => (
-                        <div className='grid grid-cols-7 gap-2 items-center justify-center'>
+                    <div className="items-center absolute top-20 left-[40px] w-[280px] z-40" ref={cartDropdownRef}>
+                      {data.map((item, i) => (
+                        <div className='grid grid-cols-7 gap-2 bg-[#F5F5F3] items-center justify-center py-2'>
                           <div className="col-span-2">
                             <img className='h-[50px] w-[50px]' src={item.thumbnail} alt="" />
                           </div>
@@ -134,9 +136,9 @@ const Navbar = () => {
                             <h2 className='font-dm text-[16px] font-semibold'>${item.price}</h2>
                           </div>
                           <div className="col-span-1">
-                           <div onClick={()=>handleDelete(i)} className="">
-                             <RxCross2 />
-                           </div>
+                            <div onClick={(e) => handleDelete(i,e)} className="">
+                              <RxCross2 />
+                            </div>
                           </div>
                         </div>
 
@@ -147,8 +149,8 @@ const Navbar = () => {
                           <h2>Subtotal: <span className='font-dm text-[18px] font-semibold'>${(totalPrice).toFixed(2)}</span></h2>
                         </div>
                         <div className="flex gap-10">
-                          <button onClick={handleCart} className='text-black font-semibold border-black border-2 h-[50px] w-[140px] text-[14px] cursor-pointer hover:bg-black hover:text-white duration-300 ease-in-out'>View Cart</button>
-                          <button className='text-black font-semibold border-black border-2 cursor-pointer h-[50px] w-[140px] text-[14px] hover:bg-black hover:text-white duration-300 ease-in-out'>Checkout</button>
+                          <button onClick={handleCart} className='text-black font-semibold border-black border-2 h-[50px] w-[130px] text-[14px] cursor-pointer hover:bg-black hover:text-white duration-300 ease-in-out'>View Cart</button>
+                          <Link to="/checkout"><button className='text-black font-semibold border-black border-2 cursor-pointer h-[50px] w-[120px] text-[14px] hover:bg-black hover:text-white duration-300 ease-in-out'>Checkout</button></Link>
                         </div>
                       </div>
                     </div>

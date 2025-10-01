@@ -1,6 +1,6 @@
 import React from 'react'
 import Container from '../components/Container'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { useDispatch, useSelector } from 'react-redux'
 import { PiSmileySadLight } from 'react-icons/pi'
@@ -9,6 +9,7 @@ import { decrement, increment, productRemove } from '../components/slice/product
 const Cart = () => {
   let data = useSelector((state) => state.product.cartItem)
   let dispatch = useDispatch()
+  let navigate = useNavigate()
   let handleIncrement = (i)=>{
   dispatch(increment(i));
   }
@@ -19,6 +20,10 @@ const Cart = () => {
     dispatch(productRemove(i));
     
   }
+   let handleCheckout = () => {
+    navigate("/checkout")
+  }
+
 
   let {totalPrice,totalQuantity} = data.reduce((acc, item)=>{
     acc.totalPrice += item.price * item.quantity
@@ -148,7 +153,7 @@ const Cart = () => {
       </div>
 
       <div className="flex justify-end">
-        <button className='text-black font-semibold border-black border-2 cursor-pointer h-[50px] w-[160px] text-[14px] hover:bg-black hover:text-white duration-300 ease-in-out'><a href="#">Proceed to Checkout</a></button>
+        <button onClick={()=>handleCheckout()} className='text-black font-semibold border-black border-2 cursor-pointer h-[50px] w-[160px] text-[14px] hover:bg-black hover:text-white duration-300 ease-in-out'><a href="#">Proceed to Checkout</a></button>
       </div>
 
       </div>
