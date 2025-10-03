@@ -58,12 +58,12 @@ const Checkout = () => {
               
               <div className="space-y-4 mb-6">
                 {data.map((item, i) => (
-                  <div key={i} className="flex gap-3 border-b border-[#F0F0F0] pb-4">
-                    <img className='h-[60px] w-[60px]' src={item.thumbnail} alt="" />
+                  <div className="flex gap-4 border-b border-[#F0F0F0] pb-4 items-center">
+                    <img className='h-[120px] w-[120px]' src={item.thumbnail} alt="" />
                     <div>
-                      <h4 className='font-dm text-[14px] font-bold'>{item.title}</h4>
-                      <p className='font-dm text-[12px] text-[#767676]'>Qty: {item.quantity}</p>
-                      <p className='font-dm text-[16px] font-bold'>${item.price}</p>
+                      <h4 className='font-dm text-[20px] font-bold'>{item.title}</h4>
+                      <p className='font-dm text-[14px] text-[#767676]'>Qty: {item.quantity}</p>
+                      <p className='font-dm text-[18px] font-bold'>${item.price}</p>
                     </div>
                   </div>
                 ))}
@@ -84,7 +84,7 @@ const Checkout = () => {
 
                 <div className="flex justify-between border-t pb-[40px] border-[#F0F0F0] pt-2">
                   <span className='font-dm text-[16px] font-bold'>Total</span>
-                  <span className='font-dm text-[16px] font-bold'>${(totalPrice).toFixed(2)}</span>
+                  <span className='font-dm text-[16px] font-bold'>${(totalPrice + 5).toFixed(2)}</span>
                 </div>
               </div>
 
